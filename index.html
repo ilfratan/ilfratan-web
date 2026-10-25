@@ -54,11 +54,11 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 .podcast-credits{max-width:900px;color:var(--muted);font-size:13px;line-height:1.75;margin-top:0}
 .podcast-layout{display:grid;grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);gap:27px;margin-top:19px;align-items:start}
 .podcast-selection{border-top:1px solid #49383b}
-.podcast-episode{width:100%;display:flex;align-items:center;gap:13px;padding:18px 7px;background:transparent;color:var(--cream);border:0;border-bottom:1px solid #49383b;text-align:left;cursor:pointer;border-radius:0}
+.podcast-episode{width:100%;display:flex;align-items:center;gap:13px;padding:18px 7px;background:transparent;color:#f5f0e9;border:0;border-bottom:1px solid #49383b;text-align:left;cursor:pointer;border-radius:0}
 .podcast-episode:hover{background:#211718}
-.podcast-episode.active{background:#211417;border-left:3px solid #d93349;padding-left:4px}
+.podcast-episode.active{color:#fff5ed;background:#211417;border-left:3px solid #d93349;padding-left:4px}
 .podcast-index{font-size:11px;color:#e76070;letter-spacing:1px}
-.podcast-episode-name{flex:1;font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;line-height:1.25}
+.podcast-episode-name{flex:1;min-width:0;font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;line-height:1.25}
 .podcast-episode-name small{display:block;font:400 12px 'DM Sans',Arial,sans-serif;color:#afa5a0;margin-top:5px}
 .podcast-play-icon{color:#d95a6e;font-size:13px}
 @media(max-width:800px){.podcast-layout{grid-template-columns:1fr;gap:20px}}
@@ -218,9 +218,9 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 <div class="podcast-layout">
 <div class="podcast-selection" role="group" aria-label="Elegir episodio de Discos Esenciales">
 <button type="button" class="podcast-episode active" data-episode="3lhTirHfMCJrDanv9A3sGP" aria-pressed="true"><span class="podcast-index">01</span><span class="podcast-episode-name">Parklife <small>Blur · 1994</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
-<button type="button" class="podcast-episode" data-episode="5ee6YYRjCavHDLualWabat" aria-pressed="false"><span class="podcast-index">02</span><span class="podcast-episode-name">Selección 02 <small>Discos Esenciales</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
-<button type="button" class="podcast-episode" data-episode="3JBEqZJV0l74LeXfVxZLI1" aria-pressed="false"><span class="podcast-index">03</span><span class="podcast-episode-name">Selección 03 <small>Discos Esenciales</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
-<button type="button" class="podcast-episode" data-episode="1AQ3WiHyan3TPb5asaPLbL" aria-pressed="false"><span class="podcast-index">04</span><span class="podcast-episode-name">Selección 04 <small>Discos Esenciales</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
+<button type="button" class="podcast-episode" data-episode="5ee6YYRjCavHDLualWabat" aria-pressed="false"><span class="podcast-index">02</span><span class="podcast-episode-name">Blood Sugar Sex Magik <small>Red Hot Chili Peppers · 1991</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
+<button type="button" class="podcast-episode" data-episode="3JBEqZJV0l74LeXfVxZLI1" aria-pressed="false"><span class="podcast-index">03</span><span class="podcast-episode-name">Remain in Light <small>Talking Heads · 1980</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
+<button type="button" class="podcast-episode" data-episode="1AQ3WiHyan3TPb5asaPLbL" aria-pressed="false"><span class="podcast-index">04</span><span class="podcast-episode-name">The Stooges <small>The Stooges · 1969</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
 </div>
 <div class="podcast-player-wrap"><iframe id="discos-spotify-player" title="Discos Esenciales — Spotify" src="https://open.spotify.com/embed/episode/3lhTirHfMCJrDanv9A3sGP" width="100%" height="352" style="display:block;border:0;border-radius:12px;background:#191919" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 <p class="note" style="margin:12px 0 0">Elegí un episodio de la lista y dale play en Spotify. La reproducción disponible puede depender de tu cuenta y región.</p></div>
