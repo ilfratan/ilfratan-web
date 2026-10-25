@@ -71,6 +71,12 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 .podcast-catalog-copy p{font-size:13px;line-height:1.65;max-width:560px;margin:0 0 17px}
 .podcast-catalog-button{display:inline-block;font-size:11px;text-decoration:none}
 @media(max-width:580px){.podcast-catalog{gap:15px;padding:14px;align-items:flex-start}.podcast-art-link{flex-basis:85px}.podcast-art{width:85px}.podcast-catalog-copy h3{font-size:20px}.podcast-catalog-button{font-size:10px}}
+
+.social-links{display:flex;flex-wrap:wrap;gap:11px;margin-top:28px}
+.social-links a{display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:145px;border:1px solid #594448;padding:15px 17px;background:#171313;color:#f2eee7;text-decoration:none;font-size:13px;font-weight:700;transition:background .2s,border-color .2s}
+.social-links a:hover,.social-links a:focus-visible{background:#321820;border-color:#df6372}
+.social-links a span:last-child{color:#ed596b;font-size:16px}
+@media(max-width:610px){.social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.social-links a{min-width:0;padding:13px}}
 </style></head>
 <body>
 <header><div class="wrap"><nav><a href="#inicio" class="logo">IL FRATAN<em>FERNANDO FRATANTONI</em></a>
@@ -247,8 +253,16 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 <div class="tile"><h3>Televisión y contenidos</h3><p>Experiencia en Viacom, MTV, Nickelodeon y Comedy Central, con trabajo en contenidos digitales y producción.</p></div>
 <div class="tile"><h3>Ideas en movimiento</h3><p>Proyectos periodísticos, formatos musicales, entrevistas, curaduría y colaboraciones con artistas y espacios culturales.</p></div>
 </div></div></section>
-<section id="contacto"><div class="wrap"><div class="kicker">05 / Contacto</div><h2>Hablemos de música.</h2><p class="section-desc">Para entrevistas, proyectos editoriales, producción o sesiones de DJ, contactame por los canales profesionales habituales.</p>
-<p class="note">Próximamente: correo y redes oficiales. No se publica ninguna dirección de contacto sin confirmar.</p></div></section>
+<section id="contacto"><div class="wrap"><div class="kicker">05 / Contacto</div><h2>Hablemos de música.</h2>
+<p class="section-desc">Para entrevistas, proyectos editoriales, producción o sesiones de DJ, encontrame también en estas plataformas.</p>
+<div class="social-links" aria-label="Redes y perfiles de Fernando Fratantoni">
+<a href="https://www.linkedin.com/in/fratan/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span aria-hidden="true">↗</span></a>
+<a href="https://x.com/ilfratan" target="_blank" rel="noopener noreferrer"><span>X / Twitter</span><span aria-hidden="true">↗</span></a>
+<a href="https://www.instagram.com/ilfratan/" target="_blank" rel="noopener noreferrer"><span>Instagram</span><span aria-hidden="true">↗</span></a>
+<a href="https://www.facebook.com/ilfratan" target="_blank" rel="noopener noreferrer"><span>Facebook</span><span aria-hidden="true">↗</span></a>
+<a href="https://substack.com/@ilfratan" target="_blank" rel="noopener noreferrer"><span>Substack</span><span aria-hidden="true">↗</span></a>
+</div>
+</div></section>
 </main><footer><div class="wrap">© 2026 Fernando Fratantoni · IL FRATAN · Buenos Aires</div></footer>
 <script>
 let current='TODOS';const stories=[...document.querySelectorAll('.story')],search=document.querySelector('#search'),counter=document.querySelector('#counter');
