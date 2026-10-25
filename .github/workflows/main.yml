@@ -20,7 +20,8 @@ jobs:
           python-version: '3.12'
       - name: Instalar lector HTML
         run: pip install requests beautifulsoup4
-      - name: Actualizar fotos y ordenar notas por fecha
+       - name: Actualizar fotos y ordenar notas por fecha
+        shell: python {0}
         run: |
           import html
           import json
