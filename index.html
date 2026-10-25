@@ -40,6 +40,7 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 @media(max-width:850px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.menu{gap:12px}.menu a{font-size:10px}h1{letter-spacing:-3px}}
 @media(max-width:610px){.cards,.tiles{grid-template-columns:1fr}nav{align-items:flex-start;padding:15px 0;flex-direction:column}.hero{padding:65px 0}.wrap{padding:0 18px}.story{min-height:auto}section{padding:58px 0}}
 .story-cover{display:block;width:calc(100% + 46px);height:180px;object-fit:cover;margin:-25px -23px 22px;border-bottom:1px solid #413939;background:#292126}
+.story-main-link{display:block;text-decoration:none;color:inherit}.story-main-link:hover h3,.story-main-link:focus-visible h3{color:#f17885}.story-main-link:focus-visible{outline:2px solid #f17885;outline-offset:3px}.story-main-link:has(.story-cover){margin:-25px -23px 22px}.story-main-link .story-cover{margin:0;width:100%}.story-main-link:has(.story-cover)+.story-meta{margin-top:0}
 </style></head>
 <body>
 <header><div class="wrap"><nav><a href="#inicio" class="logo">IL FRATAN<em>FERNANDO FRATANTONI</em></a>
@@ -206,5 +207,24 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 let current='TODOS';const stories=[...document.querySelectorAll('.story')],search=document.querySelector('#search'),counter=document.querySelector('#counter');
 function filterStories(){let n=0,q=search.value.trim().toLowerCase();for(const el of stories){let ok=(current==='TODOS'||el.dataset.outlet===current)&&el.dataset.search.includes(q);el.hidden=!ok;if(ok)n++}counter.textContent=n+' notas en esta selección';}
 for(const b of document.querySelectorAll('button[data-filter]'))b.addEventListener('click',()=>{current=b.dataset.filter;document.querySelectorAll('button[data-filter]').forEach(x=>x.classList.toggle('active',x===b));filterStories()});
+
+// Hacer clicables la portada y el título de cada nota.
+for (const card of stories) {
+  const original = card.querySelector('a[href]');
+  if (!original) continue;
+  const url = original.getAttribute('href');
+  for (const element of [card.querySelector('img.story-cover'), card.querySelector('h3')]) {
+    if (!element) continue;
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'story-main-link';
+    link.setAttribute('aria-label', element.tagName === 'IMG' ? 'Abrir nota: ' + (card.querySelector('h3')?.textContent || '') : element.textContent);
+    element.parentNode.insertBefore(link, element);
+    link.appendChild(element);
+  }
+  original.remove();
+}
 search.addEventListener('input',filterStories);filterStories();
 </script></body></html>
