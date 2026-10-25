@@ -72,11 +72,14 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 .podcast-catalog-button{display:inline-block;font-size:11px;text-decoration:none}
 @media(max-width:580px){.podcast-catalog{gap:15px;padding:14px;align-items:flex-start}.podcast-art-link{flex-basis:85px}.podcast-art{width:85px}.podcast-catalog-copy h3{font-size:20px}.podcast-catalog-button{font-size:10px}}
 
-.social-links{display:flex;flex-wrap:wrap;gap:11px;margin-top:28px}
-.social-links a{display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:145px;border:1px solid #594448;padding:15px 17px;background:#171313;color:#f2eee7;text-decoration:none;font-size:13px;font-weight:700;transition:background .2s,border-color .2s}
-.social-links a:hover,.social-links a:focus-visible{background:#321820;border-color:#df6372}
-.social-links a span:last-child{color:#ed596b;font-size:16px}
-@media(max-width:610px){.social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.social-links a{min-width:0;padding:13px}}
+.social-links{display:flex;align-items:flex-start;flex-wrap:wrap;gap:28px;margin-top:30px}
+.social-links a{display:flex;flex-direction:column;align-items:center;gap:9px;color:#f2eee7;text-decoration:none;min-width:64px;transition:color .2s,transform .2s}
+.social-links a:hover,.social-links a:focus-visible{color:#ef5b70;transform:translateY(-3px)}
+.social-icon{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border:1px solid #5a4749;border-radius:50%;background:#151112;transition:border-color .2s,background .2s}
+.social-links a:hover .social-icon,.social-links a:focus-visible .social-icon{border-color:#ed596b;background:#271317}
+.social-icon svg{width:24px;height:24px;display:block}
+.social-label{font-size:11px;color:#b2aaa2;font-weight:600}
+@media(max-width:610px){.social-links{gap:15px}.social-links a{min-width:60px}.social-icon{width:46px;height:46px}}
 </style></head>
 <body>
 <header><div class="wrap"><nav><a href="#inicio" class="logo">IL FRATAN<em>FERNANDO FRATANTONI</em></a>
@@ -256,11 +259,11 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 <section id="contacto"><div class="wrap"><div class="kicker">05 / Contacto</div><h2>Hablemos de música.</h2>
 <p class="section-desc">Para entrevistas, proyectos editoriales, producción o sesiones de DJ, encontrame también en estas plataformas.</p>
 <div class="social-links" aria-label="Redes y perfiles de Fernando Fratantoni">
-<a href="https://www.linkedin.com/in/fratan/" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span aria-hidden="true">↗</span></a>
-<a href="https://x.com/ilfratan" target="_blank" rel="noopener noreferrer"><span>X / Twitter</span><span aria-hidden="true">↗</span></a>
-<a href="https://www.instagram.com/ilfratan/" target="_blank" rel="noopener noreferrer"><span>Instagram</span><span aria-hidden="true">↗</span></a>
-<a href="https://www.facebook.com/ilfratan" target="_blank" rel="noopener noreferrer"><span>Facebook</span><span aria-hidden="true">↗</span></a>
-<a href="https://substack.com/@ilfratan" target="_blank" rel="noopener noreferrer"><span>Substack</span><span aria-hidden="true">↗</span></a>
+<a href="https://www.linkedin.com/in/fratan/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9A1.55 1.55 0 0 0 3.55 22h16.9A1.55 1.55 0 0 0 22 20.45V3.55A1.55 1.55 0 0 0 20.45 2ZM7.93 18.7H4.96V9.12h2.97ZM6.45 7.81a1.72 1.72 0 1 1 0-3.44 1.72 1.72 0 0 1 0 3.44ZM18.7 18.7h-2.96v-4.66c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.74H9.44V9.12h2.84v1.31h.04a3.11 3.11 0 0 1 2.8-1.54c2.99 0 3.58 1.97 3.58 4.53Z"/></svg></span><span class="social-label">LinkedIn</span></a>
+<a href="https://x.com/ilfratan" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M18.9 2h3.1l-6.77 7.74L23.2 22h-6.24l-4.89-7.43L5.57 22H2.44l7.24-8.28L1.9 2h6.4l4.42 6.75L18.9 2Zm-1.09 18h1.72L7.36 3.9H5.51Z"/></svg></span><span class="social-label">X</span></a>
+<a href="https://www.instagram.com/ilfratan/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.7" cy="6.4" r="1" fill="currentColor" stroke="none"/></svg></span><span class="social-label">Instagram</span></a>
+<a href="https://www.facebook.com/ilfratan" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M13.62 22v-8.94h3l.45-3.49h-3.45V7.34c0-1.01.28-1.7 1.73-1.7h1.84V2.52A24.7 24.7 0 0 0 14.5 2c-2.68 0-4.51 1.63-4.51 4.62v2.95H7v3.49h2.99V22Z"/></svg></span><span class="social-label">Facebook</span></a>
+<a href="https://substack.com/@ilfratan" target="_blank" rel="noopener noreferrer" aria-label="Substack" title="Substack"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M3 3h18v2.3H3Zm0 4.3h18v2.4H3Zm0 4.4h18V22l-9-5.12L3 22Z"/></svg></span><span class="social-label">Substack</span></a>
 </div>
 </div></section>
 </main><footer><div class="wrap">© 2026 Fernando Fratantoni · IL FRATAN · Buenos Aires</div></footer>
