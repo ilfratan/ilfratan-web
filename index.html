@@ -50,6 +50,18 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 .episode-title small{font-family:'DM Sans',Arial,sans-serif;font-size:12px;letter-spacing:.4px;font-weight:400;color:#b2aaa2;margin-left:13px}
 .episode-arrow{text-align:right;font-size:19px;color:#f17885}
 @media(max-width:610px){.episode-title small{display:block;margin:5px 0 0}.episode-row{padding:15px 3px}}
+
+.podcast-credits{max-width:900px;color:var(--muted);font-size:13px;line-height:1.75;margin-top:0}
+.podcast-layout{display:grid;grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);gap:27px;margin-top:19px;align-items:start}
+.podcast-selection{border-top:1px solid #49383b}
+.podcast-episode{width:100%;display:flex;align-items:center;gap:13px;padding:18px 7px;background:transparent;color:var(--cream);border:0;border-bottom:1px solid #49383b;text-align:left;cursor:pointer;border-radius:0}
+.podcast-episode:hover{background:#211718}
+.podcast-episode.active{background:#211417;border-left:3px solid #d93349;padding-left:4px}
+.podcast-index{font-size:11px;color:#e76070;letter-spacing:1px}
+.podcast-episode-name{flex:1;font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;line-height:1.25}
+.podcast-episode-name small{display:block;font:400 12px 'DM Sans',Arial,sans-serif;color:#afa5a0;margin-top:5px}
+.podcast-play-icon{color:#d95a6e;font-size:13px}
+@media(max-width:800px){.podcast-layout{grid-template-columns:1fr;gap:20px}}
 </style></head>
 <body>
 <header><div class="wrap"><nav><a href="#inicio" class="logo">IL FRATAN<em>FERNANDO FRATANTONI</em></a>
@@ -190,11 +202,19 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 <p class="note">Fuente de partida: relevamiento de artículos realizado en agosto de 2026. Fechas, títulos y direcciones conservados según ese archivo; algunos enlaces podrían haber cambiado desde entonces.</p>
 </div></section>
 <section id="audio"><div class="wrap"><div class="kicker">02 / Escuchar</div><h2>Discos Esenciales</h2>
-<p class="section-desc">Discos fundamentales del rock, sus historias y protagonistas. Escuchá los episodios del podcast de Rolling Stone Argentina directamente desde IL FRATAN.</p>
-<div class="spotify-podcast">
-<iframe title="Discos Esenciales — Reproductor de Spotify" src="https://open.spotify.com/embed/show/2vcNfCURMHLt5kkXveSsgH?utm_source=generator" width="100%" height="352" style="border-radius:12px;border:0;display:block;background:#181818;" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p class="section-desc">Desde 2020 participo en <em>Discos Esenciales</em>, el podcast de Rolling Stone Argentina. A lo largo de 18 episodios trabajé en entrevistas, investigación, guiones y producción, reconstruyendo las historias detrás de discos fundamentales del rock junto a músicos y protagonistas de la escena.</p>
+<p class="podcast-credits">Entre los invitados estuvieron Leo García, Emmanuel Horvilleur, Richard Coleman, Barbi Recanati, Fernando Ruiz Díaz, Santiago Motorizado, Walas, Javier Zuker, Sebastián Krys, Sergio Rotman, Mario Siperman, Juanchi Baleirón, Benito Cerati, Marina Fages, Corvata Corvalán, Gustavo Rowek, Ariel Minimal, Andrea Álvarez, Baltasar Comotto y Pato Sardelli.</p>
+<div class="kicker" style="margin-top:32px">Cuatro episodios / Elegí qué escuchar</div>
+<div class="podcast-layout">
+<div class="podcast-selection" role="group" aria-label="Elegir episodio de Discos Esenciales">
+<button type="button" class="podcast-episode active" data-episode="3lhTirHfMCJrDanv9A3sGP" aria-pressed="true"><span class="podcast-index">01</span><span class="podcast-episode-name">Parklife <small>Blur · 1994</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
+<button type="button" class="podcast-episode" data-episode="5ee6YYRjCavHDLualWabat" aria-pressed="false"><span class="podcast-index">02</span><span class="podcast-episode-name">Selección 02 <small>Discos Esenciales</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
+<button type="button" class="podcast-episode" data-episode="3JBEqZJV0l74LeXfVxZLI1" aria-pressed="false"><span class="podcast-index">03</span><span class="podcast-episode-name">Selección 03 <small>Discos Esenciales</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
+<button type="button" class="podcast-episode" data-episode="1AQ3WiHyan3TPb5asaPLbL" aria-pressed="false"><span class="podcast-index">04</span><span class="podcast-episode-name">Selección 04 <small>Discos Esenciales</small></span><span class="podcast-play-icon" aria-hidden="true">▶</span></button>
 </div>
-<p class="note" style="margin-top:13px">Si Spotify no carga en tu navegador, <a href="https://open.spotify.com/show/2vcNfCURMHLt5kkXveSsgH" target="_blank" rel="noopener noreferrer">escuchá el programa en Spotify</a>.</p>
+<div class="podcast-player-wrap"><iframe id="discos-spotify-player" title="Discos Esenciales — Spotify" src="https://open.spotify.com/embed/episode/3lhTirHfMCJrDanv9A3sGP" width="100%" height="352" style="display:block;border:0;border-radius:12px;background:#191919" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p class="note" style="margin:12px 0 0">Elegí un episodio de la lista y dale play en Spotify. La reproducción disponible puede depender de tu cuenta y región.</p></div>
+</div>
 </div></section>
 <section id="dj"><div class="wrap"><div class="kicker">03 / Cabina</div><h2>DJ IL FRATAN</h2>
 <p class="section-desc">Discos, groove y canciones para compartir. Sesiones en espacios de Buenos Aires como Florería Atlántico, Víctor Audio Bar, Tres Monos, Boticario y Cucha del Pari. Selecciones que pueden pasar de Serge Gainsbourg y Paolo Conte a música japonesa, soul, disco y rock argentino.</p>
@@ -231,4 +251,20 @@ for (const card of stories) {
   original.remove();
 }
 search.addEventListener('input',filterStories);filterStories();
+
+const episodePlayer=document.getElementById('discos-spotify-player');
+document.querySelectorAll('.podcast-episode[data-episode]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    const episodeId=button.dataset.episode;
+    if(!/^[A-Za-z0-9]{22}$/.test(episodeId))return;
+    document.querySelectorAll('.podcast-episode[data-episode]').forEach(b=>{
+      const selected=b===button;
+      b.classList.toggle('active',selected);
+      b.setAttribute('aria-pressed',String(selected));
+    });
+    const next='https://open.spotify.com/embed/episode/'+episodeId;
+    if(episodePlayer.getAttribute('src')!==next)episodePlayer.setAttribute('src',next);
+    episodePlayer.setAttribute('title','Discos Esenciales — '+button.querySelector('.podcast-episode-name').textContent.trim());
+  });
+});
 </script></body></html>
