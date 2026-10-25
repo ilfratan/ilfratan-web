@@ -41,6 +41,15 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 @media(max-width:610px){.cards,.tiles{grid-template-columns:1fr}nav{align-items:flex-start;padding:15px 0;flex-direction:column}.hero{padding:65px 0}.wrap{padding:0 18px}.story{min-height:auto}section{padding:58px 0}}
 .story-cover{display:block;width:calc(100% + 46px);height:180px;object-fit:cover;margin:-25px -23px 22px;border-bottom:1px solid #413939;background:#292126}
 .story-main-link{display:block;text-decoration:none;color:inherit}.story-main-link:hover h3,.story-main-link:focus-visible h3{color:#f17885}.story-main-link:focus-visible{outline:2px solid #f17885;outline-offset:3px}.story-main-link:has(.story-cover){margin:-25px -23px 22px}.story-main-link .story-cover{margin:0;width:100%}.story-main-link:has(.story-cover)+.story-meta{margin-top:0}
+
+.episode-list{margin-top:10px;border-top:1px solid #443a3a}
+.episode-row{display:grid;grid-template-columns:46px minmax(0,1fr)30px;gap:10px;align-items:center;padding:17px 4px;border-bottom:1px solid #443a3a;text-decoration:none;transition:background .15s}
+.episode-row:hover{background:#191414}
+.episode-n{font-size:11px;letter-spacing:1px;color:#b84a58}
+.episode-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(19px,2.2vw,26px);font-weight:700;line-height:1.25}
+.episode-title small{font-family:'DM Sans',Arial,sans-serif;font-size:12px;letter-spacing:.4px;font-weight:400;color:#b2aaa2;margin-left:13px}
+.episode-arrow{text-align:right;font-size:19px;color:#f17885}
+@media(max-width:610px){.episode-title small{display:block;margin:5px 0 0}.episode-row{padding:15px 3px}}
 </style></head>
 <body>
 <header><div class="wrap"><nav><a href="#inicio" class="logo">IL FRATAN<em>FERNANDO FRATANTONI</em></a>
@@ -186,12 +195,12 @@ footer{padding:35px 0;color:var(--muted);font-size:12px}
 <iframe title="Reproductor de Discos Esenciales en Apple Podcasts" src="https://embed.podcasts.apple.com/es/podcast/discos-esenciales/id1533128513" width="100%" height="155" loading="lazy" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" style="border:0;border-radius:10px;background:#1c1c1c;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 <p class="note">Si el reproductor no aparece en tu navegador, <a href="https://podcasts.apple.com/es/podcast/discos-esenciales/id1533128513" target="_blank" rel="noopener noreferrer">abrí el catálogo completo en Apple Podcasts</a>.</p>
 </div>
-<div class="kicker" style="margin-top:30px">Episodios destacados</div>
-<div class="tiles">
-<div class="tile"><h3>Viva Hate — Morrissey</h3><p>La historia detrás del debut solista de Morrissey.</p><a href="https://es.rollingstone.com/podcast-la-historia-detras-de-viva-hate-la-gran-carta-de-despedida-de-morrissey-a-the-smiths/" target="_blank" rel="noopener noreferrer">Ver el episodio ↗</a></div>
-<div class="tile"><h3>Parklife — Blur</h3><p>Una escucha del álbum que marcó el britpop.</p><a href="https://es.rollingstone.com/arg-podcast-detras-de-parklife-la-obra-maestra-de-blur-en-modo-brit-pop/" target="_blank" rel="noopener noreferrer">Ver el episodio ↗</a></div>
-<div class="tile"><h3>Remain in Light — Talking Heads</h3><a href="https://www.lanacion.com.ar/espectaculos/remain-in-light-la-historia-detras-del-album-clasico-de-talking-heads-nid07102021/" target="_blank" rel="noopener noreferrer">Ver el episodio ↗</a></div>
-<div class="tile"><h3>Dookie — Green Day</h3><a href="https://www.lanacion.com.ar/espectaculos/discos-esenciales-detras-dookie-del-gran-disco-nid2547361/" target="_blank" rel="noopener noreferrer">Ver el episodio ↗</a></div>
+<div class="kicker" style="margin-top:34px">Del archivo / Para escuchar</div>
+<div class="episode-list">
+<a class="episode-row" href="https://es.rollingstone.com/podcast-la-historia-detras-de-viva-hate-la-gran-carta-de-despedida-de-morrissey-a-the-smiths/" target="_blank" rel="noopener noreferrer"><span class="episode-n">01</span><span class="episode-title">Viva Hate <small>Morrissey</small></span><span class="episode-arrow">↗</span></a>
+<a class="episode-row" href="https://es.rollingstone.com/arg-podcast-detras-de-parklife-la-obra-maestra-de-blur-en-modo-brit-pop/" target="_blank" rel="noopener noreferrer"><span class="episode-n">02</span><span class="episode-title">Parklife <small>Blur</small></span><span class="episode-arrow">↗</span></a>
+<a class="episode-row" href="https://www.lanacion.com.ar/espectaculos/remain-in-light-la-historia-detras-del-album-clasico-de-talking-heads-nid07102021/" target="_blank" rel="noopener noreferrer"><span class="episode-n">03</span><span class="episode-title">Remain in Light <small>Talking Heads</small></span><span class="episode-arrow">↗</span></a>
+<a class="episode-row" href="https://www.lanacion.com.ar/espectaculos/discos-esenciales-detras-dookie-del-gran-disco-nid2547361/" target="_blank" rel="noopener noreferrer"><span class="episode-n">04</span><span class="episode-title">Dookie <small>Green Day</small></span><span class="episode-arrow">↗</span></a>
 </div></div></section>
 <section id="dj"><div class="wrap"><div class="kicker">03 / Cabina</div><h2>DJ IL FRATAN</h2>
 <p class="section-desc">Discos, groove y canciones para compartir. Sesiones en espacios de Buenos Aires como Florería Atlántico, Víctor Audio Bar, Tres Monos, Boticario y Cucha del Pari. Selecciones que pueden pasar de Serge Gainsbourg y Paolo Conte a música japonesa, soul, disco y rock argentino.</p>
