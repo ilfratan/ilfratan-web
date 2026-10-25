@@ -13,90 +13,216 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Instalar lector HTML
         run: pip install requests beautifulsoup4
-      - name: Buscar notas y actualizar portada
+      - name: Actualizar fotos y ordenar notas por fecha
         run: |
-          python - <<'PY'
           import html
+          import json
           import re
+          from datetime import datetime
           from pathlib import Path
           from urllib.parse import urljoin, urlparse
+          
           import requests
           from bs4 import BeautifulSoup
-
-          BASE = 'https://es.rollingstone.com/author/fernando-fratantoni/'
-          site = Path('index.html')
-          raw = site.read_text(encoding='utf-8')
-          marker = '<div class="cards" id="stories">'
-          if marker not in raw:
-              raise SystemExit('No se encontro el contenedor de notas. No se hizo ningun cambio.')
-
-          response = requests.get(BASE, timeout=30, headers={'User-Agent': 'ILFratanPublicArchive/1.0'})
-          response.raise_for_status()
-          soup = BeautifulSoup(response.text, 'html.parser')
-          found = []
-          seen = set()
-          for link in soup.find_all('a', href=True):
-              url = urljoin(BASE, link['href']).split('#')[0].split('?')[0]
-              parsed = urlparse(url)
-              if parsed.netloc != 'es.rollingstone.com' or not parsed.path.startswith('/arg-'):
-                  continue
-              title = link.get_text(' ', strip=True)
-              if len(title) < 25 or url in seen:
-                  continue
-              # Solo aceptar enlaces dentro de un bloque que identifique al autor.
-              card = link
-              authored = False
-              for _ in range(5):
-                  card = card.parent
-                  if card is None:
-                      break
-                  snippet = card.get_text(' ', strip=True)
-                  if 'FERNANDO FRATANTONI' in snippet.upper() and len(snippet) < 1600:
-                      authored = True
-                      break
-              if authored:
-                  seen.add(url)
-                  found.append((title, url))
-
-          if not found:
-              print('No se identificaron articulos con firma; sitio sin cambios.')
-              raise SystemExit(0)
-          additions = []
-          for title, url in found:
-              if url in raw:
-                  continue
-              safe_title = html.escape(title)
-              safe_url = html.escape(url, quote=True)
-              safe_search = html.escape(title.lower(), quote=True)
-              additions.append(
-                  '<article class="story" data-outlet="ROLLING STONE" '
-                  f'data-search="{safe_search}">'
-                  '<div class="story-meta">ROLLING STONE · Nueva incorporación</div>'
-                  f'<h3>{safe_title}</h3>'
-                  '<p>Artículo firmado por Fernando Fratantoni.</p>'
-                  f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">'
-                  'Leer nota original ↗</a></article>'
-              )
-          if additions:
-              raw = raw.replace(marker, marker + '\n' + '\n'.join(additions), 1)
-              site.write_text(raw, encoding='utf-8')
-              print(f'Se sumaron {len(additions)} notas.')
-          else:
-              print('No hay notas nuevas.')
-          PY
+          
+          AUTHOR_URL = 'https://es.rollingstone.com/author/fernando-fratantoni/'
+          SITE = Path('index.html')
+          HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; ILFratanArchive/2.0; personal editorial site)'}
+          SPANISH_MONTHS = {'ene':1,'feb':2,'mar':3,'abr':4,'may':5,'jun':6,'jul':7,'ago':8,'sep':9,'oct':10,'nov':11,'dic':12}
+          
+          
+          def parse_date(s):
+              if not s:
+                  return ''
+              s = s.strip()
+              iso = re.search(r'(20\d{2}|19\d{2})-(\d\d)-(\d\d)', s)
+              if iso:
+                  try:
+                      return datetime.strptime(iso.group(0), '%Y-%m-%d').date().isoformat()
+                  except ValueError:
+                      return ''
+              es = re.search(r'(\d{1,2})[- /]([a-záéíóú]{3,})[- /](20\d\d|19\d\d)', s.lower())
+              if es:
+                  mon = SPANISH_MONTHS.get(es.group(2)[:3])
+                  if mon:
+                      try:
+                          return datetime(int(es.group(3)), mon, int(es.group(1))).date().isoformat()
+                      except ValueError:
+                          return ''
+              return ''  # No inventar fecha si la página no proporciona una fecha completa.
+          
+          
+          def meta_content(soup, keys):
+              for key in keys:
+                  for attr in ('property', 'name', 'itemprop'):
+                      tag = soup.find('meta', attrs={attr:key})
+                      if tag and tag.get('content'):
+                          return tag['content'].strip()
+              return ''
+          
+          
+          def jsonld_objects(obj):
+              if isinstance(obj, list):
+                  for item in obj:
+                      yield from jsonld_objects(item)
+              elif isinstance(obj, dict):
+                  yield obj
+                  if '@graph' in obj:
+                      yield from jsonld_objects(obj['@graph'])
+          
+          
+          def get_page_details(session, url):
+              try:
+                  resp = session.get(url, timeout=22)
+                  resp.raise_for_status()
+                  soup = BeautifulSoup(resp.text, 'html.parser')
+              except requests.RequestException as ex:
+                  print(f'Aviso: no se pudo consultar {url}: {ex}')
+                  return '', ''
+              date = meta_content(soup, ['article:published_time','datePublished','parsely-pub-date','pubdate'])
+              image = meta_content(soup, ['og:image','twitter:image','twitter:image:src'])
+              for node in soup.find_all('script',type='application/ld+json'):
+                  try:
+                      data=json.loads(node.string or node.get_text())
+                  except (ValueError, TypeError):
+                      continue
+                  for obj in jsonld_objects(data):
+                      types=obj.get('@type', [])
+                      types=[types] if isinstance(types,str) else types
+                      if not any(x in ('Article','NewsArticle','BlogPosting','ReportageNewsArticle') for x in types):
+                          continue
+                      date=date or obj.get('datePublished','')
+                      if not image:
+                          im=obj.get('image')
+                          if isinstance(im,str): image=im
+                          elif isinstance(im,dict): image=im.get('url','')
+                          elif isinstance(im,list) and im:
+                              image=im[0] if isinstance(im[0],str) else im[0].get('url','') if isinstance(im[0],dict) else ''
+              date=parse_date(date)
+              image=urljoin(url,image) if image else ''
+              # Only absolute HTTPS images. No unrelated stock photography.
+              if not image.startswith('https://'):
+                  image=''
+              return date,image
+          
+          
+          def discover_author_items(session):
+              r=session.get(AUTHOR_URL,timeout=30)
+              r.raise_for_status()
+              soup=BeautifulSoup(r.text,'html.parser')
+              found=[]; seen=set()
+              for link in soup.find_all('a',href=True):
+                  url=urljoin(AUTHOR_URL,link['href']).split('#')[0].split('?')[0]
+                  parsed=urlparse(url)
+                  if parsed.netloc!='es.rollingstone.com' or not parsed.path.startswith('/arg-'):
+                      continue
+                  title=link.get_text(' ',strip=True)
+                  if len(title)<25 or url in seen:
+                      continue
+                  parent=link; byline=False
+                  for _ in range(5):
+                      parent=parent.parent
+                      if parent is None: break
+                      nearby=parent.get_text(' ',strip=True)
+                      if 'FERNANDO FRATANTONI' in nearby.upper() and len(nearby)<1600:
+                          byline=True; break
+                  if byline:
+                      found.append((title,url));seen.add(url)
+              return found
+          
+          
+          def main():
+              source=SITE.read_text(encoding='utf-8')
+              pattern=re.compile(r'(<div class="cards" id="stories">)(.*?)(</div>\s*<p class="note">)',re.S)
+              match=pattern.search(source)
+              if not match:
+                  raise SystemExit('No se encuentra el archivo de notas; no se modifica la web.')
+              cards_soup=BeautifulSoup(match.group(2),'html.parser')
+              cards=list(cards_soup.find_all('article',class_='story'))
+              session=requests.Session();session.headers.update(HEADERS)
+              known=set()
+              for card in cards:
+                  a=card.find('a',href=True)
+                  if a:
+                      known.add(a['href'].split('#')[0].split('?')[0])
+              try:
+                  discovered=discover_author_items(session)
+              except requests.RequestException as ex:
+                  # No publicar modificaciones si falla la página de autor.
+                  raise SystemExit(f'No se pudo cargar la página de autor: {ex}')
+              added=0
+              for title,url in discovered:
+                  if url in known:
+                      continue
+                  # Create a card and insert only when it's verified on author profile.
+                  card=BeautifulSoup('<article class="story" data-outlet="ROLLING STONE"></article>','html.parser').article
+                  card['data-search']=title.lower()
+                  meta=cards_soup.new_tag('div',attrs={'class':'story-meta'})
+                  meta.string='ROLLING STONE · Fecha por confirmar'
+                  card.append(meta)
+                  h3=cards_soup.new_tag('h3');h3.string=title;card.append(h3)
+                  p=cards_soup.new_tag('p');p.string='Artículo firmado por Fernando Fratantoni.';card.append(p)
+                  a=cards_soup.new_tag('a',href=url,target='_blank',rel='noopener noreferrer')
+                  a.string='Leer nota original ↗';card.append(a)
+                  cards.append(card);known.add(url);added+=1
+              photo_count=0; date_count=0
+              for card in cards:
+                  link=card.find('a',href=True)
+                  if not link: continue
+                  url=link['href']
+                  iso=card.get('data-date','')
+                  if not iso:
+                      metadata=card.find(class_='story-meta')
+                      iso=parse_date(metadata.get_text(' ',strip=True)) if metadata else ''
+                      if iso:
+                          card['data-date']=iso
+                          date_count+=1
+                  # Do not refetch already dated and illustrated notes.
+                  needs_date=not iso
+                  has_photo=card.find('img',class_='story-cover') is not None
+                  if needs_date or not has_photo:
+                      remote_date,photo=get_page_details(session,url)
+                      if needs_date and remote_date:
+                          iso=remote_date;card['data-date']=iso;date_count+=1
+                          meta=card.find(class_='story-meta')
+                          if meta and 'Nueva incorporación' in meta.get_text(' ',strip=True) or (meta and 'Fecha por confirmar' in meta.get_text(' ',strip=True)):
+                              meta.clear();meta.append('ROLLING STONE · '+datetime.fromisoformat(iso).strftime('%d/%m/%Y'))
+                      if photo and not has_photo:
+                          picture=cards_soup.new_tag('img',src=photo,alt='',loading='lazy',decoding='async')
+                          picture['class']='story-cover'
+                          picture['onerror']='this.style.display="none"'
+                          card.insert(0,picture)
+                          photo_count+=1
+              # Unknown dates always last, preserving their original order.
+              cards.sort(key=lambda x:x.get('data-date',''),reverse=True)
+              section='\n'.join(str(card) for card in cards)
+              source=source[:match.start(2)]+section+source[match.end(2):]
+              if '.story-cover{' not in source:
+                  source=source.replace('</style>',"""\n.story-cover{display:block;width:calc(100% + 46px);height:180px;object-fit:cover;margin:-25px -23px 22px;border-bottom:1px solid #413939;background:#292126}\n</style>""",1)
+              # Ensure date order applies even when readers use the search/filter UI.
+              if source!=SITE.read_text(encoding='utf-8'):
+                  SITE.write_text(source,encoding='utf-8')
+                  print(f'Actualizado: {added} notas nuevas, {photo_count} fotos nuevas, {date_count} fechas incorporadas; {len(cards)} notas ordenadas por fecha.')
+              else:
+                  print(f'Sin cambios; {len(cards)} notas en el archivo.')
+          
+          if __name__=='__main__':
+              main()
       - name: Publicar cambios mediante GitHub
         run: |
           if git diff --quiet -- index.html; then
             echo 'Sin cambios que publicar.'
             exit 0
           fi
-          git config user.name 'ilfratan-bot'
+          git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Actualizar archivo de Rolling Stone'
+          git commit -m 'Fotos y orden cronologico en IL FRATAN'
           git push
