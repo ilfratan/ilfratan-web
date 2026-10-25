@@ -1,0 +1,102 @@
+name: Actualizar notas de Rolling Stone
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar lector HTML
+        run: pip install requests beautifulsoup4
+      - name: Buscar notas y actualizar portada
+        run: |
+          python - <<'PY'
+          import html
+          import re
+          from pathlib import Path
+          from urllib.parse import urljoin, urlparse
+          import requests
+          from bs4 import BeautifulSoup
+
+          BASE = 'https://es.rollingstone.com/author/fernando-fratantoni/'
+          site = Path('index.html')
+          raw = site.read_text(encoding='utf-8')
+          marker = '<div class="cards" id="stories">'
+          if marker not in raw:
+              raise SystemExit('No se encontro el contenedor de notas. No se hizo ningun cambio.')
+
+          response = requests.get(BASE, timeout=30, headers={'User-Agent': 'ILFratanPublicArchive/1.0'})
+          response.raise_for_status()
+          soup = BeautifulSoup(response.text, 'html.parser')
+          found = []
+          seen = set()
+          for link in soup.find_all('a', href=True):
+              url = urljoin(BASE, link['href']).split('#')[0].split('?')[0]
+              parsed = urlparse(url)
+              if parsed.netloc != 'es.rollingstone.com' or not parsed.path.startswith('/arg-'):
+                  continue
+              title = link.get_text(' ', strip=True)
+              if len(title) < 25 or url in seen:
+                  continue
+              # Solo aceptar enlaces dentro de un bloque que identifique al autor.
+              card = link
+              authored = False
+              for _ in range(5):
+                  card = card.parent
+                  if card is None:
+                      break
+                  snippet = card.get_text(' ', strip=True)
+                  if 'FERNANDO FRATANTONI' in snippet.upper() and len(snippet) < 1600:
+                      authored = True
+                      break
+              if authored:
+                  seen.add(url)
+                  found.append((title, url))
+
+          if not found:
+              print('No se identificaron articulos con firma; sitio sin cambios.')
+              raise SystemExit(0)
+          additions = []
+          for title, url in found:
+              if url in raw:
+                  continue
+              safe_title = html.escape(title)
+              safe_url = html.escape(url, quote=True)
+              safe_search = html.escape(title.lower(), quote=True)
+              additions.append(
+                  '<article class="story" data-outlet="ROLLING STONE" '
+                  f'data-search="{safe_search}">'
+                  '<div class="story-meta">ROLLING STONE · Nueva incorporación</div>'
+                  f'<h3>{safe_title}</h3>'
+                  '<p>Artículo firmado por Fernando Fratantoni.</p>'
+                  f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">'
+                  'Leer nota original ↗</a></article>'
+              )
+          if additions:
+              raw = raw.replace(marker, marker + '\n' + '\n'.join(additions), 1)
+              site.write_text(raw, encoding='utf-8')
+              print(f'Se sumaron {len(additions)} notas.')
+          else:
+              print('No hay notas nuevas.')
+          PY
+      - name: Publicar cambios mediante GitHub
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Sin cambios que publicar.'
+            exit 0
+          fi
+          git config user.name 'ilfratan-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Actualizar archivo de Rolling Stone'
+          git push
